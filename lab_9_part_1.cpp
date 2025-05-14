@@ -27,3 +27,5 @@ int main() {
 	_getch();
 	return 0;
 }
+
+// для разбора темы https://purecodecpp.com/archives/2751
