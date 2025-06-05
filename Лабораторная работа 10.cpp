@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <cmath>
+#include <string>
 
 using namespace std;
 
@@ -37,7 +38,7 @@ node* create_list() {
 }
 
 // Функция вывода списка
-void my_input(node* x) {
+void list_print(node* x) {
     // Проходим по всем узлам списка
     while (x) {
         cout << x->data << " ";  // Выводим значение текущего узла
@@ -46,73 +47,63 @@ void my_input(node* x) {
     cout << endl;  // Переход на новую строку после вывода
 }
 
-// Основная функция обработки списка
-void task(node** head) {
-    // Проверка на пустой список
-    if (*head == nullptr) {
-        cout << "Нет элементов в списке!\n";
-        return;
-    }
-
-    // Подсчет количества элементов в списке
-    int count = 0;
-    node* current = *head;
+size_t list_size(node* head) {
+    size_t count = 0;
+    node* current = head;
     while (current != nullptr) {
         count++;
         current = current->next;
     }
+    return count;
+}
+
+// Основная функция обработки списка
+node* task(node* head) {
+    // Проверка на пустой список
+    if (head == nullptr) {
+        cout << "Нет элементов в списке!\n";
+        return nullptr;
+    }
+
+    // Подсчет количества элементов в списке
+    size_t count = list_size(head);
 
     // Определяем, какие элементы сохранять:
     // Если количество элементов четное - сохраняем нечетные значения
     // Если нечетное - сохраняем четные
     bool keepOdd = (count % 2 == 0);
 
-    // Создаем новый список
-    node* newHead = nullptr;
-    node* tail = nullptr;
-    current = *head;
+    node* current = head;
+    node* prev = nullptr;
+    size_t index = 1;
 
-    // Проходим по исходному списку
     while (current != nullptr) {
-        // Проверяем, нужно ли сохранять текущий элемент
-        bool shouldKeep = (keepOdd && current->data % 2 != 0) ||
-            (!keepOdd && current->data % 2 == 0);
+        bool remove_this = ((current->data) % 2 == 0) == keepOdd;
 
-        if (shouldKeep) {
-            // Создаем новый узел с таким же значением
-            node* newNode = new node(current->data);
+        if (remove_this) {
+            node* to_remove = current;
+            if (prev) prev->next = current->next;
+            else head = current->next; // удаляет нач. ноду (head)
 
-            // Добавляем его в новый список
-            if (newHead == nullptr) {
-                newHead = newNode;  // Первый элемент
-                tail = newNode;
-            }
-            else {
-                tail->next = newNode;  // Добавляем в конец
-                tail = newNode;
-            }
+            current = current->next;
+            delete to_remove;
         }
-        current = current->next;  // Переходим к следующему узлу
+        else {
+            prev = current;
+            current = current->next;
+        }
+        ++index;
     }
-
-    // Удаляем старый список
-    current = *head;
-    while (current != nullptr) {
-        node* temp = current;
-        current = current->next;
-        delete temp;  // Освобождаем память
-    }
-
-    // Обновляем голову списка
-    *head = newHead;
 
     // Выводим результат операции
-    if (*head == nullptr) {
+    if (head == nullptr) {
         cout << "Нет элементов в списке!\n";
     }
     else {
         cout << "Список изменен!\n";
     }
+
+    return head;
 }
 
 // Функция добавления нового узла в конец списка
@@ -154,11 +145,7 @@ void add_node(bool flag, node** head, int& N) {
     }
 }
 
-int main() {
-    // Настройка локали и генератора случайных чисел
-    setlocale(LC_ALL, "RU");
-    srand(time(NULL));
-
+void menu() {
     // Инициализация переменных
     node* head = nullptr;
     char choice;
@@ -168,7 +155,9 @@ int main() {
     // Основной цикл меню
     do {
         // Вывод меню и считывание выбора
-        my_input("1. Сгенерировать первый элемент списка\n2. Добавить N новых элементов в список\n3. Вывести список на экран\n4. Изменить список по заданию\n5. Выход\n", choice);
+        my_input("1. Сгенерировать первый элемент списка\n2.\
+ Добавить N новых элементов в список\n3. Вывести список на экран\n4.\
+ Изменить список по заданию\n5. Выход\n", choice);
 
         // Обработка выбора пользователя
         switch (choice) {
@@ -180,10 +169,10 @@ int main() {
             add_node(flag, &head, N);
             break;
         case '3':
-            my_input(head);
+            list_print(head);
             break;
         case '4':
-            task(&head);
+            head = task(head);
             break;
         case '5':
             cout << "Выход из программы.\n";
@@ -199,6 +188,13 @@ int main() {
         head = head->next;
         delete temp;
     }
+}
 
+int main() {
+    // Настройка локали и генератора случайных чисел
+    setlocale(LC_ALL, "RU");
+    srand(time(NULL));
+
+    menu();
     return 0;
 }
