@@ -27,29 +27,29 @@ struct Employee {
 
     void print_employee() {
         static const char* day_names[] = {
-            "Понедельник", "Вторник", "Среда",
-            "Четверг", "Пятница", "Суббота", "Воскресенье"
+            "РџРѕРЅРµРґРµР»СЊРЅРёРє", "Р’С‚РѕСЂРЅРёРє", "РЎСЂРµРґР°",
+            "Р§РµС‚РІРµСЂРі", "РџСЏС‚РЅРёС†Р°", "РЎСѓР±Р±РѕС‚Р°", "Р’РѕСЃРєСЂРµСЃРµРЅСЊРµ"
         };
 
-        cout << "ID работника -> " << id_record << endl;
-        cout << "ФИО рабочего: " << lastname << " " << name << " " << fathername << endl;
-        cout << "День недели: " << day_names[working_day] << " (" << working_day << ") " << endl;
-        cout << "Количество собранных изделий: " << number_of_products << endl;
+        cout << "ID СЂР°Р±РѕС‚РЅРёРєР° -> " << id_record << endl;
+        cout << "Р¤РРћ СЂР°Р±РѕС‡РµРіРѕ: " << lastname << " " << name << " " << fathername << endl;
+        cout << "Р”РµРЅСЊ РЅРµРґРµР»Рё: " << day_names[working_day] << " (" << working_day << ") " << endl;
+        cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ СЃРѕР±СЂР°РЅРЅС‹С… РёР·РґРµР»РёР№: " << number_of_products << endl;
     }
 };
 
-Employee create_employee() { // создать случайного сотрудника
-    static const char* names[] = { // статичный массив случ. имен (иниц. один раз)
+Employee create_employee() { // СЃРѕР·РґР°С‚СЊ СЃР»СѓС‡Р°Р№РЅРѕРіРѕ СЃРѕС‚СЂСѓРґРЅРёРєР°
+    static const char* names[] = { // СЃС‚Р°С‚РёС‡РЅС‹Р№ РјР°СЃСЃРёРІ СЃР»СѓС‡. РёРјРµРЅ (РёРЅРёС†. РѕРґРёРЅ СЂР°Р·)
        "Andrey", "Danil", "Vlad", "Roman", "Nikita",
        "Kirill", "Yra", "Jeniya", "Ilya", "Marat"
     };
 
-    static const char* lastnames[] = { // статичный массив случ. фамилий
+    static const char* lastnames[] = { // СЃС‚Р°С‚РёС‡РЅС‹Р№ РјР°СЃСЃРёРІ СЃР»СѓС‡. С„Р°РјРёР»РёР№
         "Troshin", "Lobanov","Kolchin", "Soldatov","Vinogradov",
         "Jelonkin","Safronov", "Usmankin","Basharov", "Polyakov"
     };
 
-    static const char* fathernames[] = { // статичный массив случ. отчеств
+    static const char* fathernames[] = { // СЃС‚Р°С‚РёС‡РЅС‹Р№ РјР°СЃСЃРёРІ СЃР»СѓС‡. РѕС‚С‡РµСЃС‚РІ
         "Alekseevich", "Dmitrievich","Ilych", "Petrovich","Maksimovich",
         "Matveevich","Michalych", "Renatovich","Romanovich", "Valerevich"
     };
@@ -69,7 +69,7 @@ Employee create_employee() { // создать случайного сотрудника
 }
 
 //
-// Работа с массивом
+// Р Р°Р±РѕС‚Р° СЃ РјР°СЃСЃРёРІРѕРј
 //
 
 Employee* array_init(size_t size) {
@@ -91,9 +91,9 @@ void array_print(Employee* arr, size_t sz) {
     }
 }
 
-Employee* array_delete_at_index(Employee* array, size_t& size, size_t index) { // возвращает новый массив с удаленными элементами
+Employee* array_delete_at_index(Employee* array, size_t& size, size_t index) { // РІРѕР·РІСЂР°С‰Р°РµС‚ РЅРѕРІС‹Р№ РјР°СЃСЃРёРІ СЃ СѓРґР°Р»РµРЅРЅС‹РјРё СЌР»РµРјРµРЅС‚Р°РјРё
     if (index >= size) {
-        cout << "Ошибка: индекс вне диапазона" << endl;
+        cout << "РћС€РёР±РєР°: РёРЅРґРµРєСЃ РІРЅРµ РґРёР°РїР°Р·РѕРЅР°" << endl;
         return array;
     }
 
@@ -105,9 +105,9 @@ Employee* array_delete_at_index(Employee* array, size_t& size, size_t index) { /
         }
     }
 
-    delete[] array; // сносим старый массив
-    --size; // уменьшаем размер, переменная передается по ссылке
-    return newArray; // возвращаем новый
+    delete[] array; // СЃРЅРѕСЃРёРј СЃС‚Р°СЂС‹Р№ РјР°СЃСЃРёРІ
+    --size; // СѓРјРµРЅСЊС€Р°РµРј СЂР°Р·РјРµСЂ, РїРµСЂРµРјРµРЅРЅР°СЏ РїРµСЂРµРґР°РµС‚СЃСЏ РїРѕ СЃСЃС‹Р»РєРµ
+    return newArray; // РІРѕР·РІСЂР°С‰Р°РµРј РЅРѕРІС‹Р№
 }
 
 void array_clear(Employee* array) {
@@ -118,7 +118,7 @@ void array_clear(Employee* array) {
 Employee* array_find_by_lastname(Employee* arr, size_t size, const char* lastname, size_t& out_size) {
     out_size = 0;
 
-    // Сначала считаем, сколько совпадений
+    // РЎРЅР°С‡Р°Р»Р° СЃС‡РёС‚Р°РµРј, СЃРєРѕР»СЊРєРѕ СЃРѕРІРїР°РґРµРЅРёР№
     for (size_t i = 0; i < size; ++i) {
         if (strcmp(arr[i].lastname, lastname) == 0) {
             ++out_size;
@@ -128,7 +128,7 @@ Employee* array_find_by_lastname(Employee* arr, size_t size, const char* lastnam
     if (out_size == 0)
         return nullptr;
 
-    // Выделим массив под найденные записи
+    // Р’С‹РґРµР»РёРј РјР°СЃСЃРёРІ РїРѕРґ РЅР°Р№РґРµРЅРЅС‹Рµ Р·Р°РїРёСЃРё
     Employee* results = new Employee[out_size];
     size_t j = 0;
 
@@ -155,17 +155,17 @@ void array_sort(Employee* array, size_t size) {
 
 
 //
-// Работа с файлами
+// Р Р°Р±РѕС‚Р° СЃ С„Р°Р№Р»Р°РјРё
 //
 
 void write_to_binary(const char* filename, Employee* array, size_t sz) {
     ofstream out(filename, ios::binary);
     if (!out.is_open()) {
-        cout << "Ошибка при открытии файла для записи" << endl;
+        cout << "РћС€РёР±РєР° РїСЂРё РѕС‚РєСЂС‹С‚РёРё С„Р°Р№Р»Р° РґР»СЏ Р·Р°РїРёСЃРё" << endl;
         return;
     }
 
-    out.write(reinterpret_cast<char*>(&sz), sizeof(sz)); // сохраняем размер
+    out.write(reinterpret_cast<char*>(&sz), sizeof(sz)); // СЃРѕС…СЂР°РЅСЏРµРј СЂР°Р·РјРµСЂ
     out.write(reinterpret_cast<char*>(array), sizeof(Employee) * sz);
 
     out.close();
@@ -174,7 +174,7 @@ void write_to_binary(const char* filename, Employee* array, size_t sz) {
 Employee* read_from_binary(const char* filename, size_t& size_out) {
     ifstream in(filename, ios::binary);
     if (!in.is_open()) {
-        cout << "Ошибка при открытии файла для чтения" << endl;
+        cout << "РћС€РёР±РєР° РїСЂРё РѕС‚РєСЂС‹С‚РёРё С„Р°Р№Р»Р° РґР»СЏ С‡С‚РµРЅРёСЏ" << endl;
         return nullptr;
     }
 
@@ -191,7 +191,7 @@ Employee* read_from_binary(const char* filename, size_t& size_out) {
 }
 
 //
-// Действия над записями
+// Р”РµР№СЃС‚РІРёСЏ РЅР°Рґ Р·Р°РїРёСЃСЏРјРё
 //
 
 const size_t MAX_RECORDS = 10;
@@ -206,30 +206,30 @@ void action_delete() {
     string input;
     do {
         number_record = -1;
-        cout << "Выберите номер записи (или -1 для отмены): ";
+        cout << "Р’С‹Р±РµСЂРёС‚Рµ РЅРѕРјРµСЂ Р·Р°РїРёСЃРё (РёР»Рё -1 РґР»СЏ РѕС‚РјРµРЅС‹): ";
         cin >> input;
         try {
             number_record = stoi(input);
             if (number_record == -1) return;
         }
         catch (...) {
-            std::cout << "Неверный ввод, попробуйте снова.\n";
+            std::cout << "РќРµРІРµСЂРЅС‹Р№ РІРІРѕРґ, РїРѕРїСЂРѕР±СѓР№С‚Рµ СЃРЅРѕРІР°.\n";
         }
 
     } while (number_record < 0 || number_record >= size);
 
 
-    try { // пробуем удалить элемент и затем сохранить всё в файле
+    try { // РїСЂРѕР±СѓРµРј СѓРґР°Р»РёС‚СЊ СЌР»РµРјРµРЅС‚ Рё Р·Р°С‚РµРј СЃРѕС…СЂР°РЅРёС‚СЊ РІСЃС‘ РІ С„Р°Р№Р»Рµ
         array = array_delete_at_index(array, size, number_record);
 
-        cout << "Обновленный список: " << endl;
+        cout << "РћР±РЅРѕРІР»РµРЅРЅС‹Р№ СЃРїРёСЃРѕРє: " << endl;
         array_print(array, size);
 
         write_to_binary(FILENAME, array, size);
     }
     catch (...) {
-        cout << "Что-то пошло не так при попытке удалить запись!" << endl;
-        // Если что-то пошло не по плану, то мы всегда удаляем список
+        cout << "Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє РїСЂРё РїРѕРїС‹С‚РєРµ СѓРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ!" << endl;
+        // Р•СЃР»Рё С‡С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ РїРѕ РїР»Р°РЅСѓ, С‚Рѕ РјС‹ РІСЃРµРіРґР° СѓРґР°Р»СЏРµРј СЃРїРёСЃРѕРє
     }
 
     array_clear(array);
@@ -241,7 +241,7 @@ void action_find() {
     if (array == nullptr) return;
 
     string lastname;
-    cout << "Введите фамилию сотрудника: ";
+    cout << "Р’РІРµРґРёС‚Рµ С„Р°РјРёР»РёСЋ СЃРѕС‚СЂСѓРґРЅРёРєР°: ";
     cin >> lastname;
 
     try { 
@@ -249,17 +249,17 @@ void action_find() {
         Employee* seek_array = array_find_by_lastname(array, size, lastname.c_str(), seek_size);
 
         if (seek_array == nullptr) {
-            cout << "Сотрудник с фамилией " << lastname << " не найден" << endl;
+            cout << "РЎРѕС‚СЂСѓРґРЅРёРє СЃ С„Р°РјРёР»РёРµР№ " << lastname << " РЅРµ РЅР°Р№РґРµРЅ" << endl;
         }
         else {
-            cout << "Результат поиска: " << endl;
+            cout << "Р РµР·СѓР»СЊС‚Р°С‚ РїРѕРёСЃРєР°: " << endl;
             array_print(seek_array, seek_size);
             array_clear(seek_array);
         }
     }
     catch (...) {
-        cout << "Что-то пошло не так при попытке поиска!" << endl;
-        // Если что-то пошло не по плану, то мы всегда удаляем список
+        cout << "Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє РїСЂРё РїРѕРїС‹С‚РєРµ РїРѕРёСЃРєР°!" << endl;
+        // Р•СЃР»Рё С‡С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ РїРѕ РїР»Р°РЅСѓ, С‚Рѕ РјС‹ РІСЃРµРіРґР° СѓРґР°Р»СЏРµРј СЃРїРёСЃРѕРє
     }
 
     array_clear(array);
@@ -270,14 +270,14 @@ void action_sort() {
     Employee* array = read_from_binary(FILENAME, size);
     if (array == nullptr) return;
 
-    try { // пробуем отсортировать список и сохраним результат
+    try { // РїСЂРѕР±СѓРµРј РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє Рё СЃРѕС…СЂР°РЅРёРј СЂРµР·СѓР»СЊС‚Р°С‚
         array_sort(array, size);
-        cout << "Обновленный список: " << endl;
+        cout << "РћР±РЅРѕРІР»РµРЅРЅС‹Р№ СЃРїРёСЃРѕРє: " << endl;
         write_to_binary(FILENAME, array, size);
         array_print(array, size);
     }
     catch (...) {
-        cout << "Что-то пошло не так при попытке сортировать список!" << endl;
+        cout << "Р§С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє РїСЂРё РїРѕРїС‹С‚РєРµ СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЃРїРёСЃРѕРє!" << endl;
     }
 
     array_clear(array);
@@ -285,9 +285,9 @@ void action_sort() {
 
 bool menu() {
     size_t choice;
-    cout << "\nВозможные действия с записями: ";
-    cout << "\n\t1 - Удалить запись по её номеру \n\t2 - Поиск по фамилии \n\t3 - Сортировать по кол-ву продукции\n\t4 - Выход из меню" << endl;
-    cout << "Введите действие: ";
+    cout << "\nР’РѕР·РјРѕР¶РЅС‹Рµ РґРµР№СЃС‚РІРёСЏ СЃ Р·Р°РїРёСЃСЏРјРё: ";
+    cout << "\n\t1 - РЈРґР°Р»РёС‚СЊ Р·Р°РїРёСЃСЊ РїРѕ РµС‘ РЅРѕРјРµСЂСѓ \n\t2 - РџРѕРёСЃРє РїРѕ С„Р°РјРёР»РёРё \n\t3 - РЎРѕСЂС‚РёСЂРѕРІР°С‚СЊ РїРѕ РєРѕР»-РІСѓ РїСЂРѕРґСѓРєС†РёРё\n\t4 - Р’С‹С…РѕРґ РёР· РјРµРЅСЋ" << endl;
+    cout << "Р’РІРµРґРёС‚Рµ РґРµР№СЃС‚РІРёРµ: ";
     cin >> choice;
 
     switch (choice) {
@@ -304,15 +304,15 @@ int main() {
     setlocale(LC_ALL, "RU");
     srand(time(NULL));
 
-    // Создаём и заполняем массив из рабочих.
+    // РЎРѕР·РґР°С‘Рј Рё Р·Р°РїРѕР»РЅСЏРµРј РјР°СЃСЃРёРІ РёР· СЂР°Р±РѕС‡РёС….
     Employee* array = array_init(MAX_RECORDS);
 
-    // Записываем данные из массива в бинарный файл
+    // Р—Р°РїРёСЃС‹РІР°РµРј РґР°РЅРЅС‹Рµ РёР· РјР°СЃСЃРёРІР° РІ Р±РёРЅР°СЂРЅС‹Р№ С„Р°Р№Р»
     array_print(array, MAX_RECORDS);
     write_to_binary(FILENAME, array, MAX_RECORDS);
     array_clear(array);
 
-    // Действия с меню
+    // Р”РµР№СЃС‚РІРёСЏ СЃ РјРµРЅСЋ
     bool flag_menu = true;
     do {
         // Menu
@@ -322,7 +322,7 @@ int main() {
             flag_menu = menu();
         }
         else {
-            cout << "В файле не осталось записей, выход из программы!" << endl;
+            cout << "Р’ С„Р°Р№Р»Рµ РЅРµ РѕСЃС‚Р°Р»РѕСЃСЊ Р·Р°РїРёСЃРµР№, РІС‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹!" << endl;
             flag_menu = false;
         }
         array_clear(check);
