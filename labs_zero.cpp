@@ -108,7 +108,26 @@ string request_facultet(){
 		cin >> r_facultet;
 	} while (proper_facultet(r_facultet));
 
+	cout << "Успешно!" << endl;
 	return r_facultet;
+}
+
+int request_course(){
+	int r_course;
+
+	do {
+		cout << "Введите искомый курс от 1 до 4: ";
+		cin >> r_course;
+	} while (r_course < 1 || r_course > 4);
+
+	cout << "Успешно!" << endl;
+	return r_course;
+}
+
+int request_group(int rec_course){
+	int r_group;
+
+
 }
 
 int main(){
@@ -127,6 +146,8 @@ int main(){
 	print_array(students, MAXSIZE);
 
 	string rec_fac = request_facultet();
+	int rec_course = request_course();
+	int rec_group = request_group(rec_course);
 	
 	_getch();
 	return 0;
