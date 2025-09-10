@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <conio.h>
+#include <iomanip>
 
 using namespace std;
 
@@ -14,9 +16,14 @@ struct Student {
 	int avg_progress;
 
 	void print_info_student() {
-		cout << endl << "ФИО: " << surname << " " << name << " " << fathername << endl;
-		cout << "Факультет: " << faculty << ". Курс: " << course << ". Группа: " << group << endl;
-		cout << "Средняя успеваемость: " << avg_progress << endl << endl;
+		cout << left << setw(15) << surname;
+		cout << left << setw(10) << name;
+		cout << left << setw(15) << fathername;
+		cout << left << setw(15) << faculty;
+		cout << left << setw(10) << course;
+		cout << left << setw(10) << group;
+		cout << avg_progress << " %";
+		cout << endl;
 	}
 
 };
@@ -83,9 +90,19 @@ void filling_array(Student* s, size_t size) {
 }
 
 void print_array(Student* s, size_t size) {
+	cout << left << setw(15) << "ФАМИЛИЯ";
+	cout << left << setw(10) << "ИМЯ";
+	cout << left << setw(15) << "ОТЧЕСТВО";
+	cout << left << setw(15) << "ФАКУЛЬТЕТ";
+	cout << left << setw(10) << "КУРС";
+	cout << left << setw(10) << "ГРУППА";
+	cout << "УСПЕВАЕМОСТЬ (AVG)"; 
+	cout << endl << endl;
+
 	for (int i = 0; i < size; i++) {
 		s[i].print_info_student();
 	}
+	cout << endl;
 }
 
 bool proper_facultet(string r_facultet) {
@@ -153,6 +170,11 @@ void search_students(Student* s, size_t size, string fac, int course, int group)
 		cout << "Нет совпадений!" << endl;
 }
 
+void array_clear(Student* array) {
+	delete[] array;
+	array = nullptr;
+}
+
 int main() {
 	setlocale(LC_ALL, "RU");
 	srand(time(NULL));
@@ -173,5 +195,7 @@ int main() {
 	int rec_group = request_group(rec_course);
 	search_students(students, MAXSIZE, rec_fac, rec_course, rec_group);
 
+	array_clear(students);
+	_getch();
 	return 0;
 }
