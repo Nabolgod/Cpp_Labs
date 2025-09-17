@@ -7,6 +7,12 @@ using namespace std;
 
 const double PI = 3.14;
 
+template <typename T>
+void my_input(T& value, string text) {
+	cout << text;
+	cin >> value;
+}
+
 class Ellipse {
 private:
 	static unsigned int global_id;
@@ -26,8 +32,8 @@ private:
 	}
 
 public:
-	Ellipse(){
-		set_id(global_id++);
+	Ellipse() {
+		id = 0;
 		a = 1;
 		b = 1;
 	}
@@ -74,14 +80,16 @@ unsigned int Ellipse::global_id = 0;
 Ellipse create_el() {
 	double a, b;
 	do {
-		cout << "Введите значение оси a (положительное): ";
-		cin >> a;
+		my_input(a, "Введите значение оси a (положительное): ");
+		//cout << "Введите значение оси a (положительное): ";
+		//cin >> a;
 
 	} while (a <= 0);
 
 	do {
-		cout << "Введите значение оси b (положительное): ";
-		cin >> b;
+		my_input(b, "Введите значение оси b (положительное): ");
+		//cout << "Введите значение оси b (положительное): ";
+		//cin >> b;
 
 	} while (b <= 0);
 
@@ -117,7 +125,7 @@ double max_area(Ellipse* array, int size_array) {
 		if (value > max_value) {
 			max_value = value;
 		}
-		
+
 	}
 
 	return max_value;
@@ -141,33 +149,44 @@ void print_max_main(Ellipse* array, int size_array) {
 	int count_perimeter = 0;
 
 	double max_val_area = max_area(array, size_array);
-	unsigned int max_id_area;
 	double max_val_perimeter = max_perimeter(array, size_array);
-	unsigned int max_id_perimeter;
+
+	//cout << max_val_area << " " << max_val_perimeter << endl;
 
 	for (int i = 0; i < size_array; i++) {
-		if (max_val_area <= array[i].get_area()) {
+		if (max_val_area == array[i].get_area()) {
 			count_area++;
-			max_id_area = array[i].get_id();
 		}
-		if (max_val_perimeter <= array[i].get_perimeter()) {
+		if (max_val_perimeter == array[i].get_perimeter()) {
 			count_perimeter++;
-			max_id_perimeter = array[i].get_id();
 		}
 	}
+	//cout << count_area << " " << count_perimeter << endl;
 
-	if (count_area > 1) {
+	if ((count_area == size_array) && (size_array != 1)) {
 		cout << "Эллписа с наибольшой площадью не найдено." << endl;
 	}
 	else {
-		cout << "ID эллписа с наибольшей площадью: " << max_id_area << endl;
+		cout << "Эллписы с наибольшей площадью: " << endl;
+		for (int i = 0; i < size_array; i++) {
+			if (max_val_area == array[i].get_area()) {
+				array[i].print_info();
+			}
+		}
+		cout << endl;
 	}
 
-	if (count_perimeter > 1) {
+	if ((count_perimeter == size_array) && (size_array != 1)) {
 		cout << "Эллписа с наибольшим периметром не найдено." << endl;
 	}
 	else {
-		cout << "ID эллписа с наибольшим периметром: " << max_id_perimeter << endl;
+		cout << "Эллписы с наибольшим периметром: " << endl;
+		for (int i = 0; i < size_array; i++) {
+			if (max_val_perimeter == array[i].get_perimeter()) {
+				array[i].print_info();
+			}
+		}
+		cout << endl;
 	}
 
 }
@@ -178,8 +197,9 @@ int main() {
 	int count_obj_el;
 
 	do {
-		cout << "Введите количество эллипсов (положительное целое число): ";
-		cin >> count_obj_el;
+		my_input(count_obj_el, "Введите количество эллипсов (положительное целое число): ");
+		//cout << "Введите количество эллипсов (положительное целое число): ";
+		//cin >> count_obj_el;
 	} while (count_obj_el <= 0);
 
 	Ellipse* array_el = new Ellipse[count_obj_el];
