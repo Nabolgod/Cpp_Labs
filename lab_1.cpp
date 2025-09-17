@@ -27,9 +27,9 @@ private:
 
 public:
 	Ellipse(){
-		id = 0;
-		a = 0;
-		b = 0;
+		set_id(global_id++);
+		a = 1;
+		b = 1;
 	}
 
 	Ellipse(double a, double b) {
@@ -99,7 +99,6 @@ void print_array(Ellipse* array, int size_array) {
 	for (int i = 0; i < size_array; i++) {
 		array[i].print_info();
 	}
-
 	cout << endl;
 }
 
@@ -189,5 +188,7 @@ int main() {
 	print_array(array_el, count_obj_el);
 	print_max_main(array_el, count_obj_el);
 
+	delete[] array_el;
+	array_el = nullptr;
 	return 0;
 }
