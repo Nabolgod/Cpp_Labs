@@ -1,8 +1,13 @@
+#include <conio.h>
 #include <iostream>
 #include <string>
 #include <ctime>
 #include <iomanip>
 #include <cmath>
+
+/* В некотором многоэтажном доме есть 5 лифтов(пассажирские и грузовые).Запрограммировать класс лифта Определить конструкторы и деструктор.
+Смоделировать работу лифтов : вызов определённого лифта, получение данных о местоположении(этаж), количестве пройденных этажей.
+Получить признак активности(лифт находится в движении или нет).Предусмотреть вывод управляющего меню. */
 
 using namespace std;
 
@@ -19,6 +24,7 @@ protected:
 	unsigned int id;
 	int current_floor;
 	bool is_move = false;
+	int mileage_floors = 0;
 
 public:
 	Elevator() {
@@ -40,14 +46,15 @@ public:
 
 	void move(int target_floor) {
 		int diff_floor = abs(target_floor - current_floor);
-		cout << "Лифт №" << id << " переместился с " << current_floor
-			<< " на " << target_floor << " этаж (пройдено " << diff_floor << ")" << endl;
+		cout << "Лифт №" << id << " переместился с " << current_floor << " на " << target_floor << endl;
 		current_floor = target_floor;
+		mileage_floors += diff_floor;
 	}
 
 	virtual void print_info() {
 		cout << left << setw(10) << id;
 		cout << left << setw(15) << current_floor;
+		cout << left << setw(10) << mileage_floors;
 	};
 };
 
@@ -56,8 +63,8 @@ private:
 	int count_passenger;
 
 public:
-	ElevatorPassenger(): Elevator() {
-		count_passenger = (rand()% 10) + 1;
+	ElevatorPassenger() : Elevator() {
+		count_passenger = (rand() % 10) + 1;
 	}
 
 	ElevatorPassenger(int cur_f) : Elevator(cur_f) {
@@ -128,7 +135,7 @@ public:
 	}
 
 	void print_info() {
-		cout << endl <<"Информация здания: " << endl;
+		cout << endl << "Информация здания: " << endl;
 		cout << "Минимальный этаж: " << min_floor << endl;
 		cout << "Максимальный этаж: " << max_floor << endl;
 		cout << "Количество лифтов: " << elevators_count << endl << endl;
@@ -139,6 +146,7 @@ public:
 		cout << left << setw(15) << "Тип лифта";
 		cout << left << setw(10) << "ID-лифта";
 		cout << left << setw(15) << "Текущий этаж";
+		cout << left << setw(10) << "Пробег";
 		cout << left << setw(10) << "Грузоподъёмность";
 		cout << endl << endl;
 
@@ -156,7 +164,9 @@ void user_interface() {
 	int minf, maxf;
 	int count_el = 5;
 
-	my_input(minf, "Введите минимальный этаж здания (положительное целое число): ");
+	do {
+		my_input(minf, "Введите минимальный этаж здания (целое число): ");
+	} while (minf > 1);
 	do {
 		my_input(maxf, "Введите максимальный этаж здания (положительное целое число): ");
 	} while (maxf <= minf);
@@ -214,8 +224,9 @@ void user_interface() {
 int main() {
 	setlocale(LC_ALL, "RU");
 	srand(time(NULL));
-	
+
 	user_interface();
-	
+
+	_getch();
 	return 0;
 }
