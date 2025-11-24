@@ -7,7 +7,7 @@
 using namespace std;
 using namespace std::filesystem;
 
-class FileManager{
+class FileManager {
 private:
     string path;
     string filename;
@@ -18,40 +18,48 @@ public:
         filename = "example.txt";
     }
 
-    FileManager(string p, string fn){
+    FileManager(string p, string fn) {
         set_path(p);
         set_filename(fn);
     }
 
-    void set_path(string p){
+    void set_path(string p) {
         path = p;
     }
 
-    void set_filename(string fn){
+    string get_path() {
+        return path;
+    }
+
+    void set_filename(string fn) {
         filename = fn;
     }
 
-    string fullname(){
+    string get_filename() {
+        return filename;
+    }
+
+    string fullname() {
         return path + filename;
     }
 
-    void create_file(){
+    void create_file() {
         ofstream file(fullname());
         if (file.is_open()) {
             cout << "Файл успешно создан!" << endl;
             file.close();
         }
-        else 
+        else
             cout << "Ошибка при создании файла!" << endl;
     }
 
-    void read_to_print_file(){
+    void read_to_print_file() {
         ifstream file(fullname());
-        if (file.is_open()){
+        if (file.is_open()) {
             cout << "Файл успешно открыт для чтения!" << endl;
             cout << "\n=== Содержимое файла " << filename << " ===" << endl;
             string line;
-            while (getline(file, line)){
+            while (getline(file, line)) {
                 cout << line << endl;
             }
             file.close();
@@ -61,18 +69,18 @@ public:
             cout << "Ошибка открытия файла для чтения!" << endl;
     }
 
-    void update_to_end_file(string data){
+    void update_to_end_file(string data) {
         ofstream file(fullname(), ios::app);
-        if (file.is_open()){
-            cout << "Файл успешно открыт для добавления данных в конец!" << endl;
+        if (file.is_open()) {
+            cout << "Данные успешно добавлены в конец!" << endl;
             file << data << endl;
             file.close();
         }
         else
-            cout << "Ошибка открытия файла для добавления данных!" << endl;
+            cout << "Ошибка добавления данных!" << endl;
     }
 
-    void clear_file(){
+    void clear_file() {
         ofstream file(fullname());
         if (file.is_open()) {
             cout << "Файл успешно очищен!" << endl;
@@ -83,17 +91,26 @@ public:
     }
 };
 
-void interface(FileManager object){
+void interface(FileManager object) {
     int choice;
     do {
-        cout << "1. Создать файл\n2. Добавить данные в файл\n3. Чтение файла\n4. Очистить файл\n5. Изменить путь файла\n6. Изменить имя файла\n7. Выйти из интерфейса" << endl;
-        cout << "Выберите одно из действий: ";
+        cout << "\n=== Файловый менеджер ===" << endl;
+
+        cout << "1. Создать файл" << endl;
+        cout << "2. Добавить данные в файл" << endl;
+        cout << "3. Чтение файла" << endl;
+        cout << "4. Очистить файл" << endl;
+        cout << "5. Изменить путь файла" << endl;
+        cout << "6. Изменить имя файла" << endl;
+        cout << "7. Информация о файле" << endl;
+        cout << "8. Выйти из интерфейса" << endl;
+        cout << "Выберите действие: ";
         cin >> choice;
         cin.ignore();
 
         if (choice == 1)
             object.create_file();
-        else if (choice == 2){
+        else if (choice == 2) {
             string input_data;
             cout << "Введите данные для добавления: ";
             getline(cin, input_data);
@@ -103,13 +120,13 @@ void interface(FileManager object){
             object.read_to_print_file();
         else if (choice == 4)
             object.clear_file();
-        else if (choice == 5){
+        else if (choice == 5) {
             string new_path;
             cout << "Введите новый путь до файла: ";
             getline(cin, new_path);
             object.set_path(new_path);
         }
-        else if (choice == 6){
+        else if (choice == 6) {
             string new_filename;
             cout << "Введите новое имя файла: ";
             getline(cin, new_filename);
@@ -123,7 +140,7 @@ void interface(FileManager object){
     } while (true);
 }
 
-int main(){
+int main() {
     setlocale(LC_ALL, "RU");
 
     int choice;
@@ -140,19 +157,20 @@ int main(){
         string input_path;
         cout << "Введите путь до файла: ";
         getline(cin, input_path);
-            
+
         string input_filename;
         cout << "Введите имя файла: ";
         getline(cin, input_filename);
 
         obj = FileManager(input_path, input_filename);
-    } else {
+    }
+    else {
         cout << "Используются настройки по умолчанию:" << endl;
         cout << "Путь: " << obj.get_path() << endl;
         cout << "Имя файла: " << obj.get_filename() << endl;
     }
 
     interface(obj);
-    
+
     return 0;
 }
