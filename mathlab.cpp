@@ -5,38 +5,50 @@ using namespace std;
 
 class MathObject {
 public:
-	MathObject __add__(MathObject other) {};
-
-	MathObject __sub__(MathObject other) {};
-
-	MathObject __mul__(MathObject other) {};
-
-	MathObject __mul__(int other) {};
-
-	void __str__(int other) {}
+    virtual ~MathObject() = default;
+    
+    // Чисто виртуальные методы - должны быть реализованы в дочерних классах
+    virtual MathObject* __add__(const MathObject& other) const = 0;
+    virtual MathObject* __sub__(const MathObject& other) const = 0;
+    virtual MathObject* __mul__(const MathObject& other) const = 0;
+    virtual MathObject* __mul__(int scalar) const = 0;
+    virtual std::string __str__() const = 0;
 };
 
 class Matrix : public MathObject {
+private:
+    // данные матрицы
+    int rows, cols;
+    
 public:
-	Matrix __add__(Matrix other) {
-		return Matrix();
-	}
-
-	Matrix __sub__(Matrix other) {
-		return Matrix();
-	}
-
-	Matrix __mul__(Matrix other) {
-		return Matrix();
-	}
-
-	Matrix __mul__(int other) {
-		return Matrix();
-	}
-
-	void __str__(int other) {
-		cout << "" << endl;
-	}
+    Matrix(int r = 0, int c = 0) : rows(r), cols(c) {}
+    
+    // Реализация абстрактных методов
+    MathObject* __add__(const MathObject& other) const override {
+        // Здесь ты просто реализуешь сложение матриц
+        // Пока заглушка - возвращаем новую матрицу
+        return new Matrix(rows, cols);
+    }
+    
+    MathObject* __sub__(const MathObject& other) const override {
+        return new Matrix(rows, cols);
+    }
+    
+    MathObject* __mul__(const MathObject& other) const override {
+        return new Matrix(rows, cols);
+    }
+    
+    MathObject* __mul__(int scalar) const override {
+        return new Matrix(rows, cols);
+    }
+    
+    std::string __str__() const override {
+        return "Matrix[" + std::to_string(rows) + "x" + std::to_string(cols) + "]";
+    }
+    
+    // Специфичные методы матрицы
+    int getRows() const { return rows; }
+    int getCols() const { return cols; }
 };
 
 class Polynomial : public MathObject {
