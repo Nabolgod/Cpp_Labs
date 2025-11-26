@@ -1,150 +1,352 @@
 #include <iostream>
 #include <string>
+#include <any>
 
 using namespace std;
 
+template<typename Derived>
 class MathObject {
 public:
-    virtual ~MathObject() = default;
-    
-    // Чисто виртуальные методы - должны быть реализованы в дочерних классах
-    virtual MathObject* __add__(const MathObject& other) const = 0;
-    virtual MathObject* __sub__(const MathObject& other) const = 0;
-    virtual MathObject* __mul__(const MathObject& other) const = 0;
-    virtual MathObject* __mul__(int scalar) const = 0;
-    virtual std::string __str__() const = 0;
+	string name_math_obj;
+
+	virtual ~MathObject() = default;
+
+	// Обязательный для реализации метод сложения объектов одного типа 
+	virtual Derived* operator+(const Derived& other) const = 0;
+
+	// Обязательный для реализации метод вычитания объектов одного типа 
+	virtual Derived* operator-(const Derived& other) const = 0;
+
+	// Обязательный для реализации метод умножения объектов одного типа 
+	virtual Derived* operator*(const Derived& other) const = 0;
+
+	// Обязательный для реализации метод умножения объекта с числом
+	virtual Derived* operator*(int scalar) const = 0;
+
+	// Обязательный для реализации метод строкового представления объекта 
+	virtual void str_view const = 0;
+
+	// Обязательный для реализации метод возврата нового объекта
+	virtual MathObject new_obj_return const = 0;
 };
 
-class Matrix : public MathObject {
+class Matrix : public MathObject<Matrix> {
 private:
-    // данные матрицы
-    int rows, cols;
-    
+	int rows, cols;
+	int content[]; // Переменная для хранения значений 
+
+	void set_rows() {
+		cout << "Введите кол-во строк: ";
+		cin >> rows;
+	}
+
+	void set_cols() {
+		cout << "Введите кол-во столбцов: ";
+		cin >> cols;
+	}
+
+	void fill_matrix() {
+		int element;
+
+		cout << "Заполните матрицу: ";
+		for (int i; i <= rows; i++) {
+			for (int j; j <= cols; j++) {
+				cout << "Введите значения для элемента [" << i << ", " << j << "] :";
+				cin >> element;
+
+				content[i][j] = element;
+			}
+		}
+	}
+
 public:
-    Matrix(int r = 0, int c = 0) : rows(r), cols(c) {}
-    
-    // Реализация абстрактных методов
-    MathObject* __add__(const MathObject& other) const override {
-        // Здесь ты просто реализуешь сложение матриц
-        // Пока заглушка - возвращаем новую матрицу
-        return new Matrix(rows, cols);
-    }
-    
-    MathObject* __sub__(const MathObject& other) const override {
-        return new Matrix(rows, cols);
-    }
-    
-    MathObject* __mul__(const MathObject& other) const override {
-        return new Matrix(rows, cols);
-    }
-    
-    MathObject* __mul__(int scalar) const override {
-        return new Matrix(rows, cols);
-    }
-    
-    std::string __str__() const override {
-        return "Matrix[" + std::to_string(rows) + "x" + std::to_string(cols) + "]";
-    }
-    
-    // Специфичные методы матрицы
-    int getRows() const { return rows; }
-    int getCols() const { return cols; }
-};
-
-class Polynomial : public MathObject {
-public:
-	Polynomial __add__(Matrix other) {
-		return Polynomial();
+	Matrix(){
+		set_rows();
+		set_cols();
+		fill_matrix();
 	}
 
-	Polynomial __sub__(Matrix other) {
-		return Polynomial();
+	Matrix(int r, int c, int cnt) {
+		rows = r;
+		cols = c;
+		content = cnt;
 	}
 
-	Polynomial __mul__(Matrix other) {
-		return Polynomial();
+	string name_math_obj = "Матрица";
+	
+	// Определение перегрузки оператора сложения для сложения матриц
+	Matrix* operator+(const Matrix& other) const override {
+		int r, c;
+		int new_content[];
+
+
+		return new Matrix(r, c, new_content);
 	}
 
-	Polynomial __mul__(int other) {
-		return Polynomial();
+	// Определение перегрузки оператора сложения для вычитания матриц
+	Matrix* operator-(const Matrix& other) const override {
+		int r, c;
+		int new_content[];
+
+
+		return new Matrix(r, c, new_content);
 	}
 
-	void __str__(int other) {
-		cout << "" << endl;
-	}
-};
+	// Определение перегрузки оператора для умножения матриц
+	Matrix* operator*(const Matrix& other) const override {
+		int r, c;
+		int new_content[];
 
-class Vector : public MathObject {
-public:
-	Vector __add__(Vector other) {
-		return Vector();
+
+		return new Matrix(r, c, new_content);
 	}
 
-	Vector __sub__(Vector other) {
-		return Vector();
+	// Определение перегрузки оператора для умножения матрицы с числом
+	Matrix* operator*(int scalar) const override {
+		int r, c;
+		int new_content[];
+
+
+		return new Matrix(r, c, new_content);
 	}
 
-	Vector __mul__(Vector other) {
-		return Vector();
+	// Возврат нового объекта
+	Matrix new_obj_return() override {
+		return Matrix();
 	}
 
-	Vector __mul__(int other) {
-		return Vector();
-	}
-
-	void __str__(int other) {
-		cout << "" << endl;
-	}
-};
-
-class Fraction : public MathObject {
-public:
-	Fraction __add__(Fraction other) {
-		return Fraction();
-	}
-
-	Fraction __sub__(Fraction other) {
-		return Fraction();
-	}
-
-	Fraction __mul__(Fraction other) {
-		return Fraction();
-	}
-
-	Fraction __mul__(int other) {
-		return Fraction();
-	}
-
-	void __str__(int other) {
-		cout << "" << endl;
+	// Вывод вида объекта в консоль
+	void str_view() override {
+		for (int i; i <= rows; i++) {
+			cout << "[";
+			for (int j; j <= cols; j++) {
+				cout << content[i][j] << " ";
+			}
+			cout << "]" << endl;
+		}
 	}
 };
 
-class СomplexNumber : public MathObject {
-public:
-	СomplexNumber __add__(СomplexNumber other) {
-		return СomplexNumber();
-	}
+MathObject initialization_object_first() {
+	int choice;
 
-	СomplexNumber __sub__(СomplexNumber other) {
-		return СomplexNumber();
-	}
+	do {
+		cout << "1. Матрица" << endl;
+		cout << "2. Полином" << endl;
+		cout << "3. Вектор" << endl;
+		cout << "4. Дробь" << endl;
+		cout << "5. Комплексное число" << endl;
 
-	СomplexNumber __mul__(СomplexNumber other) {
-		return СomplexNumber();
-	}
+		cout << "Выберите первый объект операции: ";
+		cin >> choice;
+		cout << endl;
 
-	СomplexNumber __mul__(int other) {
-		return СomplexNumber();
-	}
+		switch (choice)
+		{
+		case 1:
+			return Matrix();
+			break;
+		case 2:
+			return Polynomial();
+			break;
+		case 3:
+			return Vector();
+			break;
+		case 4:
+			return Fraction();
+			break;
+		case 5:
+			return СomplexNumber();
+			break;
+		default:
+			break;
+		}
+	} while (true);
+}
 
-	void __str__(int other) {
-		cout << "" << endl;
-	}
-};
+MathObject initialization_object_second(MathObject first_obj) {
+	int choice;
+	int integer_work;
+
+	do {
+		cout << "1. " << first_obj.name_math_obj << endl;
+		cout << "2. Число" << endl;
+
+		cout << "Выберите второй объект операции: ";
+		cin >> choice;
+		cout << endl;
+		switch (choice)
+		{
+		case 1:
+			return first_obj.new_obj_return();
+			break;
+		case 2:
+			cin >> integer_work;
+			return integer_work;
+			break;
+		default:
+			break;
+		}
+	} while{true};
+}
+
+MathObject operation_result(MathObject first_obj, MathObject second_obj) {
+	int choice;
+
+	do {
+		cout << "1. Сложение" << endl;
+		cout << "2. Вычитание" << endl;
+		cout << "3. Умножение" << endl;
+
+		cout << "Выберите операцию: ";
+		cin >> choice;
+		cout << endl;
+
+		switch (choice)
+		{
+		case 1:
+			return first_obj + second_obj;
+			break;
+		case 2:
+			return first_obj - second_obj;
+			break;
+		case 3:
+			return first_obj * second_obj;
+			break;
+		default:
+			break;
+		}
+	} while (true);
+}
+
+MathObject operation_result(MathObject first_obj, int second_obj) {
+	int choice;
+
+	do {
+		cout << "1. Умножение" << endl;
+
+		cout << "Выберите операцию: ";
+		cin >> choice;
+		cout << endl;
+
+		switch (choice)
+		{
+		case 1:
+			return first_obj * second_obj;
+			break;
+		default:
+			break;
+		}
+	} while (true);
+}
+
+void menu() {
+	cout << "Добро пожаловать в консольное меню для выполнения математических операция с различными объектами!\n\n";
+
+	MathObject first_obj = initialization_object_first();
+	MathObject double_obj = initialization_object_second(first_obj);
+
+	MathObject result_obj = operation_result(first_obj, double_obj);
+
+	result_obj.str_view();
+
+}
+
+//class Polynomial : public MathObject {
+//public:
+//	MathObject* __add__(Matrix other) {
+//		return Polynomial();
+//	}
+//
+//	MathObject* __sub__(Matrix other) {
+//		return Polynomial();
+//	}
+//
+//	Polynomial __mul__(Matrix other) {
+//		return Polynomial();
+//	}
+//
+//	Polynomial __mul__(int other) {
+//		return Polynomial();
+//	}
+//
+//	void __str__(int other) {
+//		cout << "" << endl;
+//	}
+//};
+//
+//class Vector : public MathObject {
+//public:
+//	Vector __add__(Vector other) {
+//		return Vector();
+//	}
+//
+//	Vector __sub__(Vector other) {
+//		return Vector();
+//	}
+//
+//	Vector __mul__(Vector other) {
+//		return Vector();
+//	}
+//
+//	Vector __mul__(int other) {
+//		return Vector();
+//	}
+//
+//	void __str__(int other) {
+//		cout << "" << endl;
+//	}
+//};
+//
+//class Fraction : public MathObject {
+//public:
+//	Fraction __add__(Fraction other) {
+//		return Fraction();
+//	}
+//
+//	Fraction __sub__(Fraction other) {
+//		return Fraction();
+//	}
+//
+//	Fraction __mul__(Fraction other) {
+//		return Fraction();
+//	}
+//
+//	Fraction __mul__(int other) {
+//		return Fraction();
+//	}
+//
+//	void __str__(int other) {
+//		cout << "" << endl;
+//	}
+//};
+//
+//class СomplexNumber : public MathObject {
+//public:
+//	СomplexNumber __add__(СomplexNumber other) {
+//		return СomplexNumber();
+//	}
+//
+//	СomplexNumber __sub__(СomplexNumber other) {
+//		return СomplexNumber();
+//	}
+//
+//	СomplexNumber __mul__(СomplexNumber other) {
+//		return СomplexNumber();
+//	}
+//
+//	СomplexNumber __mul__(int other) {
+//		return СomplexNumber();
+//	}
+//
+//	void __str__(int other) {
+//		cout << "" << endl;
+//	}
+//};
+
 
 int main() {
-
-	
+	setlocale(LC_ALL, "RU");
+	menu();
 	return 0;
 }
