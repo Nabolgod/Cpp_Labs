@@ -4,7 +4,6 @@
 
 using namespace std;
 
-template<typename Derived>
 class MathObject {
 public:
 	string name_math_obj;
@@ -12,16 +11,16 @@ public:
 	virtual ~MathObject() = default;
 
 	// Обязательный для реализации метод сложения объектов одного типа 
-	virtual Derived* operator+(const Derived& other) const = 0;
+	virtual MathObject operator+(const Derived& other) const = 0;
 
 	// Обязательный для реализации метод вычитания объектов одного типа 
-	virtual Derived* operator-(const Derived& other) const = 0;
+	virtual MathObject operator-(const Derived& other) const = 0;
 
 	// Обязательный для реализации метод умножения объектов одного типа 
-	virtual Derived* operator*(const Derived& other) const = 0;
+	virtual MathObject operator*(const Derived& other) const = 0;
 
 	// Обязательный для реализации метод умножения объекта с числом
-	virtual Derived* operator*(int scalar) const = 0;
+	virtual MathObject operator*(int scalar) const = 0;
 
 	// Обязательный для реализации метод строкового представления объекта 
 	virtual void str_view const = 0;
@@ -251,99 +250,6 @@ void menu() {
 	result_obj.str_view();
 
 }
-
-//class Polynomial : public MathObject {
-//public:
-//	MathObject* __add__(Matrix other) {
-//		return Polynomial();
-//	}
-//
-//	MathObject* __sub__(Matrix other) {
-//		return Polynomial();
-//	}
-//
-//	Polynomial __mul__(Matrix other) {
-//		return Polynomial();
-//	}
-//
-//	Polynomial __mul__(int other) {
-//		return Polynomial();
-//	}
-//
-//	void __str__(int other) {
-//		cout << "" << endl;
-//	}
-//};
-//
-//class Vector : public MathObject {
-//public:
-//	Vector __add__(Vector other) {
-//		return Vector();
-//	}
-//
-//	Vector __sub__(Vector other) {
-//		return Vector();
-//	}
-//
-//	Vector __mul__(Vector other) {
-//		return Vector();
-//	}
-//
-//	Vector __mul__(int other) {
-//		return Vector();
-//	}
-//
-//	void __str__(int other) {
-//		cout << "" << endl;
-//	}
-//};
-//
-//class Fraction : public MathObject {
-//public:
-//	Fraction __add__(Fraction other) {
-//		return Fraction();
-//	}
-//
-//	Fraction __sub__(Fraction other) {
-//		return Fraction();
-//	}
-//
-//	Fraction __mul__(Fraction other) {
-//		return Fraction();
-//	}
-//
-//	Fraction __mul__(int other) {
-//		return Fraction();
-//	}
-//
-//	void __str__(int other) {
-//		cout << "" << endl;
-//	}
-//};
-//
-//class СomplexNumber : public MathObject {
-//public:
-//	СomplexNumber __add__(СomplexNumber other) {
-//		return СomplexNumber();
-//	}
-//
-//	СomplexNumber __sub__(СomplexNumber other) {
-//		return СomplexNumber();
-//	}
-//
-//	СomplexNumber __mul__(СomplexNumber other) {
-//		return СomplexNumber();
-//	}
-//
-//	СomplexNumber __mul__(int other) {
-//		return СomplexNumber();
-//	}
-//
-//	void __str__(int other) {
-//		cout << "" << endl;
-//	}
-//};
-
 
 int main() {
 	setlocale(LC_ALL, "RU");
