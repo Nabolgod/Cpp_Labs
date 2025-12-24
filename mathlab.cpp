@@ -21,7 +21,6 @@ public:
 	virtual bool can_add(const MathObject& other) const = 0;
 	virtual bool can_subtract(const MathObject& other) const = 0;
 	virtual bool can_multiply(const MathObject& other) const = 0;
-	virtual bool can_multiply_scalar() const { return true; }
 };
 
 class Matrix : public MathObject {
@@ -59,7 +58,7 @@ public:
 			cout << "Ошибка: размеры должны быть положительными числами. Попробуйте снова.\n";
 		}
 
-		content = new int*[rows];
+		content = new int* [rows];
 		for (int i = 0; i < rows; i++) {
 			content[i] = new int[cols];
 		}
@@ -68,7 +67,7 @@ public:
 	}
 
 	Matrix(int r, int c) : rows(r), cols(c) {
-		content = new int*[rows];
+		content = new int* [rows];
 		for (int i = 0; i < rows; i++) {
 			content[i] = new int[cols]();
 		}
@@ -83,9 +82,8 @@ public:
 
 	// Проверка возможности операций
 	bool can_add(const MathObject& other) const override {
-		const Matrix* other_matrix = dynamic_cast<const Matrix*>(&other);
-		if (!other_matrix) return false;
-		return (rows == other_matrix->rows && cols == other_matrix->cols);
+		const Matrix& other_matrix = static_cast<const Matrix&>(other);
+		return (rows == other_matrix.rows && cols == other_matrix.cols);
 	}
 
 	bool can_subtract(const MathObject& other) const override {
@@ -93,48 +91,44 @@ public:
 	}
 
 	bool can_multiply(const MathObject& other) const override {
-		const Matrix* other_matrix = dynamic_cast<const Matrix*>(&other);
-		if (!other_matrix) return false;
-		return (cols == other_matrix->rows);
+		const Matrix& other_matrix = static_cast<const Matrix&>(other);
+		return (cols == other_matrix.rows);
 	}
 
 	// Операции
 	Matrix* operator+(const MathObject& other) const override {
-		const Matrix* other_matrix = dynamic_cast<const Matrix*>(&other);
-		if (!other_matrix || !can_add(other)) return nullptr;
+		const Matrix& other_matrix = static_cast<const Matrix&>(other);
 
 		Matrix* result = new Matrix(rows, cols);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				result->content[i][j] = content[i][j] + other_matrix->content[i][j];
+				result->content[i][j] = content[i][j] + other_matrix.content[i][j];
 			}
 		}
 		return result;
 	}
 
 	Matrix* operator-(const MathObject& other) const override {
-		const Matrix* other_matrix = dynamic_cast<const Matrix*>(&other);
-		if (!other_matrix || !can_subtract(other)) return nullptr;
+		const Matrix& other_matrix = static_cast<const Matrix&>(other);
 
 		Matrix* result = new Matrix(rows, cols);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				result->content[i][j] = content[i][j] - other_matrix->content[i][j];
+				result->content[i][j] = content[i][j] - other_matrix.content[i][j];
 			}
 		}
 		return result;
 	}
 
 	Matrix* operator*(const MathObject& other) const override {
-		const Matrix* other_matrix = dynamic_cast<const Matrix*>(&other);
-		if (!other_matrix || !can_multiply(other)) return nullptr;
+		const Matrix& other_matrix = static_cast<const Matrix&>(other);
 
-		Matrix* result = new Matrix(rows, other_matrix->cols);
+		Matrix* result = new Matrix(rows, other_matrix.cols);
 		for (int i = 0; i < rows; i++) {
-			for (int j = 0; j < other_matrix->cols; j++) {
+			for (int j = 0; j < other_matrix.cols; j++) {
 				result->content[i][j] = 0;
 				for (int k = 0; k < cols; k++) {
-					result->content[i][j] += content[i][k] * other_matrix->content[k][j];
+					result->content[i][j] += content[i][k] * other_matrix.content[k][j];
 				}
 			}
 		}
@@ -234,7 +228,7 @@ public:
 	}
 
 	bool can_add(const MathObject& other) const override {
-		return dynamic_cast<const Polynomial*>(&other) != nullptr;
+		return true;
 	}
 
 	bool can_subtract(const MathObject& other) const override {
@@ -246,18 +240,17 @@ public:
 	}
 
 	Polynomial* operator+(const MathObject& other) const override {
-		const Polynomial* other_poly = dynamic_cast<const Polynomial*>(&other);
-		if (!other_poly) return nullptr;
+		const Polynomial& other_poly = static_cast<const Polynomial&>(other);
 
-		int max_degree = (degree > other_poly->degree) ? degree : other_poly->degree;
+		int max_degree = (degree > other_poly.degree) ? degree : other_poly.degree;
 		int* result_coeffs = new int[max_degree + 1]();
 
 		for (int i = 0; i <= degree; i++) {
 			result_coeffs[i] += coefficients[i];
 		}
 
-		for (int i = 0; i <= other_poly->degree; i++) {
-			result_coeffs[i] += other_poly->coefficients[i];
+		for (int i = 0; i <= other_poly.degree; i++) {
+			result_coeffs[i] += other_poly.coefficients[i];
 		}
 
 		Polynomial* result = new Polynomial(max_degree, result_coeffs);
@@ -266,18 +259,17 @@ public:
 	}
 
 	Polynomial* operator-(const MathObject& other) const override {
-		const Polynomial* other_poly = dynamic_cast<const Polynomial*>(&other);
-		if (!other_poly) return nullptr;
+		const Polynomial& other_poly = static_cast<const Polynomial&>(other);
 
-		int max_degree = (degree > other_poly->degree) ? degree : other_poly->degree;
+		int max_degree = (degree > other_poly.degree) ? degree : other_poly.degree;
 		int* result_coeffs = new int[max_degree + 1]();
 
 		for (int i = 0; i <= degree; i++) {
 			result_coeffs[i] += coefficients[i];
 		}
 
-		for (int i = 0; i <= other_poly->degree; i++) {
-			result_coeffs[i] -= other_poly->coefficients[i];
+		for (int i = 0; i <= other_poly.degree; i++) {
+			result_coeffs[i] -= other_poly.coefficients[i];
 		}
 
 		Polynomial* result = new Polynomial(max_degree, result_coeffs);
@@ -286,15 +278,14 @@ public:
 	}
 
 	Polynomial* operator*(const MathObject& other) const override {
-		const Polynomial* other_poly = dynamic_cast<const Polynomial*>(&other);
-		if (!other_poly) return nullptr;
+		const Polynomial& other_poly = static_cast<const Polynomial&>(other);
 
-		int result_degree = degree + other_poly->degree;
+		int result_degree = degree + other_poly.degree;
 		int* result_coeffs = new int[result_degree + 1]();
 
 		for (int i = 0; i <= degree; i++) {
-			for (int j = 0; j <= other_poly->degree; j++) {
-				result_coeffs[i + j] += coefficients[i] * other_poly->coefficients[j];
+			for (int j = 0; j <= other_poly.degree; j++) {
+				result_coeffs[i + j] += coefficients[i] * other_poly.coefficients[j];
 			}
 		}
 
@@ -398,20 +389,21 @@ public:
 
 	// Конструктор для 2D вектора
 	Vector(double x_val, double y_val)
-		: x(x_val), y(y_val), is_scalar_result(false), is_2d(true) {}
+		: x(x_val), y(y_val), is_scalar_result(false), is_2d(true) {
+	}
 
 	// Конструктор для 3D вектора (не используется в базовом случае)
 	Vector(double x_val, double y_val, double z_val, bool is_3d = false)
-		: x(x_val), y(y_val), is_scalar_result(false), is_2d(!is_3d) {}
+		: x(x_val), y(y_val), is_scalar_result(false), is_2d(!is_3d) {
+	}
 
 	// Конструктор для результата скалярного произведения
 	Vector(double scalar_result) : x(scalar_result), y(0), is_scalar_result(true), is_2d(true) {}
 
 	bool can_add(const MathObject& other) const override {
-		const Vector* other_vec = dynamic_cast<const Vector*>(&other);
-		if (!other_vec) return false;
+		const Vector& other_vec = static_cast<const Vector&>(other);
 		// Можно складывать только обычные векторы, не результаты скалярных произведений
-		return !is_scalar_result && !other_vec->is_scalar_result;
+		return !is_scalar_result && !other_vec.is_scalar_result;
 	}
 
 	bool can_subtract(const MathObject& other) const override {
@@ -419,30 +411,24 @@ public:
 	}
 
 	bool can_multiply(const MathObject& other) const override {
-		const Vector* other_vec = dynamic_cast<const Vector*>(&other);
-		if (!other_vec) return false;
+		const Vector& other_vec = static_cast<const Vector&>(other);
 		// Можно умножать только обычные векторы
-		return !is_scalar_result && !other_vec->is_scalar_result;
+		return !is_scalar_result && !other_vec.is_scalar_result;
 	}
 
 	Vector* operator+(const MathObject& other) const override {
-		const Vector* other_vec = dynamic_cast<const Vector*>(&other);
-		if (!other_vec || !can_add(other)) return nullptr;
-
-		return new Vector(x + other_vec->x, y + other_vec->y);
+		const Vector& other_vec = static_cast<const Vector&>(other);
+		return new Vector(x + other_vec.x, y + other_vec.y);
 	}
 
 	Vector* operator-(const MathObject& other) const override {
-		const Vector* other_vec = dynamic_cast<const Vector*>(&other);
-		if (!other_vec || !can_subtract(other)) return nullptr;
-
-		return new Vector(x - other_vec->x, y - other_vec->y);
+		const Vector& other_vec = static_cast<const Vector&>(other);
+		return new Vector(x - other_vec.x, y - other_vec.y);
 	}
 
 	// Умножение векторов - с выбором типа произведения
 	Vector* operator*(const MathObject& other) const override {
-		const Vector* other_vec = dynamic_cast<const Vector*>(&other);
-		if (!other_vec || !can_multiply(other)) return nullptr;
+		const Vector& other_vec = static_cast<const Vector&>(other);
 
 		// Для 2D векторов предлагаем только скалярное произведение
 		// или псевдоскалярное произведение (аналог векторного для 2D)
@@ -467,13 +453,13 @@ public:
 
 		if (choice == 1) {
 			// Скалярное произведение
-			double dot_product = x * other_vec->x + y * other_vec->y;
+			double dot_product = x * other_vec.x + y * other_vec.y;
 			return new Vector(dot_product); // Используем конструктор для скалярного результата
 		}
 		else {
 			// Псевдоскалярное (косое) произведение для 2D векторов
 			// Равно ориентированной площади параллелограмма, натянутого на векторы
-			double cross_product = x * other_vec->y - y * other_vec->x;
+			double cross_product = x * other_vec.y - y * other_vec.x;
 
 			// Проверка коллинеарности для 2D векторов
 			// Векторы коллинеарны, если их псевдоскалярное произведение равно 0
@@ -515,7 +501,7 @@ public:
 
 	// Дополнительные методы для работы с векторами
 	double magnitude() const {
-		return sqrt(x*x + y*y);
+		return sqrt(x * x + y * y);
 	}
 
 	Vector* normalize() const {
@@ -633,7 +619,7 @@ public:
 
 	// Проверка возможности операций
 	bool can_add(const MathObject& other) const override {
-		return dynamic_cast<const Fraction*>(&other) != nullptr;
+		return true;
 	}
 
 	bool can_subtract(const MathObject& other) const override {
@@ -641,48 +627,39 @@ public:
 	}
 
 	bool can_multiply(const MathObject& other) const override {
-		const Fraction* other_frac = dynamic_cast<const Fraction*>(&other);
-		if (other_frac) return true;
+		const Fraction& other_frac = static_cast<const Fraction&>(other);
 
 		// Дробь можно умножать на матрицу, полином и вектор через скалярное умножение
 		return true;
 	}
 
-	bool can_multiply_scalar() const override {
-		return true;
-	}
-
 	// Операции с другими дробями
 	Fraction* operator+(const MathObject& other) const override {
-		const Fraction* other_frac = dynamic_cast<const Fraction*>(&other);
-		if (!other_frac) return nullptr;
+		const Fraction& other_frac = static_cast<const Fraction&>(other);
 
-		int new_num = numerator * other_frac->denominator +
-			other_frac->numerator * denominator;
-		int new_den = denominator * other_frac->denominator;
+		int new_num = numerator * other_frac.denominator +
+			other_frac.numerator * denominator;
+		int new_den = denominator * other_frac.denominator;
 
 		return new Fraction(new_num, new_den);
 	}
 
 	Fraction* operator-(const MathObject& other) const override {
-		const Fraction* other_frac = dynamic_cast<const Fraction*>(&other);
-		if (!other_frac) return nullptr;
+		const Fraction& other_frac = static_cast<const Fraction&>(other);
 
-		int new_num = numerator * other_frac->denominator -
-			other_frac->numerator * denominator;
-		int new_den = denominator * other_frac->denominator;
+		int new_num = numerator * other_frac.denominator -
+			other_frac.numerator * denominator;
+		int new_den = denominator * other_frac.denominator;
 
 		return new Fraction(new_num, new_den);
 	}
 
 	Fraction* operator*(const MathObject& other) const override {
-		const Fraction* other_frac = dynamic_cast<const Fraction*>(&other);
-		if (other_frac) {
-			// Умножение дробей
-			int new_num = numerator * other_frac->numerator;
-			int new_den = denominator * other_frac->denominator;
-			return new Fraction(new_num, new_den);
-		}
+		const Fraction& other_frac = static_cast<const Fraction&>(other);
+		// Умножение дробей
+		int new_num = numerator * other_frac.numerator;
+		int new_den = denominator * other_frac.denominator;
+		return new Fraction(new_num, new_den);
 
 		// Для других типов объектов - возвращаем nullptr
 		// (в системе уже есть обработка умножения на скаляр через operator*(int))
@@ -736,12 +713,7 @@ public:
 
 	// Проверка возможности операций
 	bool can_add(const MathObject& other) const override {
-		const Complex* other_complex = dynamic_cast<const Complex*>(&other);
-		if (other_complex) return true;
-
-		// Комплексные числа можно складывать только с другими комплексными числами
-		// и с дробями (если они реализованы как скаляры)
-		return false;
+		return true;
 	}
 
 	bool can_subtract(const MathObject& other) const override {
@@ -749,8 +721,7 @@ public:
 	}
 
 	bool can_multiply(const MathObject& other) const override {
-		const Complex* other_complex = dynamic_cast<const Complex*>(&other);
-		if (other_complex) return true;
+		const Complex& other_complex = static_cast<const Complex&>(other);
 
 		// Комплексное число можно умножать на скаляр (целое число через operator*(int))
 		return false;
@@ -758,7 +729,7 @@ public:
 
 	// Операции с другими комплексными числами
 	Complex* operator+(const MathObject& other) const override {
-		const Complex* other_complex = dynamic_cast<const Complex*>(&other);
+		const Complex* other_complex = static_cast<const Complex*>(&other);
 		if (!other_complex) return nullptr;
 
 		return new Complex(real + other_complex->real,
